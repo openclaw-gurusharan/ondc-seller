@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useApi } from '@ondc-website/shared/hooks';
+import { useApi } from '../hooks/useApi';
 import { ProductForm } from '../components';
-import type { BecknItem } from '@ondc-agent/shared';
+import type { BecknItem } from '@ondc-sdk/shared';
 import type { ProductFormData } from '../components/ProductForm';
 import {
   PageLayout,
@@ -12,7 +12,7 @@ import {
   TYPOGRAPHY,
   RADIUS,
   DRAMS,
-} from '@ondc-agent/shared/design-system';
+} from '@ondc-sdk/shared/design-system';
 
 const CARD_STYLE = {
   ...CARD.base,

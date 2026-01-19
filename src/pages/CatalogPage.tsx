@@ -1,6 +1,6 @@
 import { useEffect, useCallback, type CSSProperties } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useApi } from '@ondc-website/shared/hooks';
+import { useApi } from '../hooks/useApi';
 import { InventoryTable } from '../components';
 import {
   PageLayout,
@@ -12,8 +12,8 @@ import {
   TYPOGRAPHY,
   DRAMS,
   GRID,
-} from '@ondc-agent/shared/design-system';
-import type { BecknItem } from '@ondc-agent/shared';
+} from '@ondc-sdk/shared/design-system';
+import type { BecknItem } from '@ondc-sdk/shared';
 
 const LOADING_STYLE: CSSProperties = {
   display: 'flex',

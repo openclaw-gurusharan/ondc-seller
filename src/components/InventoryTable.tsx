@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import type { BecknItem } from '@ondc-agent/shared';
-import { CARD, DRAMS, BUTTON, SPACING, TYPOGRAPHY, RADIUS } from '@ondc-agent/shared/design-system';
+import type { BecknItem } from '@ondc-sdk/shared';
+import { CARD, DRAMS, BUTTON, SPACING, TYPOGRAPHY, RADIUS } from '@ondc-sdk/shared/design-system';
 
 export interface InventoryTableProps {
   items: BecknItem[];

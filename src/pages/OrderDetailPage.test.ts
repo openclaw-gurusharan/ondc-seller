@@ -4,7 +4,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import type { UCPOrderStatus } from '@ondc-agent/shared';
+import type { UCPOrderStatus } from '@ondc-sdk/shared';
 
 // Import the component to ensure TypeScript compilation
 import { OrderDetailPage } from './OrderDetailPage';

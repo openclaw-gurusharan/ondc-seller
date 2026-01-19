@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate, Link, useLocation } from 'react-router-dom';
-import { DRAMS, NAV, SPACING, TYPOGRAPHY, TRANSITIONS } from '@ondc-agent/shared/design-system';
+import { DRAMS, NAV, SPACING, TYPOGRAPHY, TRANSITIONS } from '@ondc-sdk/shared/design-system';
 import { DashboardPage } from './pages/DashboardPage';
 import { CatalogPage } from './pages/CatalogPage';
 import { ProductEditPage } from './pages/ProductEditPage';

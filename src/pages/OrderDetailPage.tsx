@@ -1,6 +1,6 @@
 import { useState, useEffect, type CSSProperties } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import type { UCPOrder, UCPOrderStatus } from '@ondc-agent/shared';
+import type { UCPOrder, UCPOrderStatus } from '@ondc-sdk/shared';
 import {
   PageLayout,
   PageHeader,
@@ -11,7 +11,7 @@ import {
   BUTTON,
   CARD,
   COLORS,
-} from '@ondc-agent/shared/design-system';
+} from '@ondc-sdk/shared/design-system';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
 

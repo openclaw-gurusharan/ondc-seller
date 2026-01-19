@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import type { BecknItem } from '@ondc-agent/shared';
-import { SPACING, TYPOGRAPHY, DRAMS, disabled } from '@ondc-agent/shared/design-system';
+import type { BecknItem } from '@ondc-sdk/shared';
+import { SPACING, TYPOGRAPHY, DRAMS, disabled } from '@ondc-sdk/shared/design-system';
 import { DramsInput, DramsDropdown, DramsButton } from '@drams-design/components';
 
 export interface ProductFormData {

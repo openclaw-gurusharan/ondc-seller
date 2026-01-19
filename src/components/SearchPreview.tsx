@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
-import { ProductCard } from '@ondc-website/shared/components';
-import { DRAMS, SPACING, TYPOGRAPHY, RADIUS, BUTTON, TRANSITIONS } from '@ondc-agent/shared/design-system';
+import { DramsProductCard } from '@ondc-sdk/shared/design-system';
+import { DRAMS, SPACING, TYPOGRAPHY, RADIUS, BUTTON, TRANSITIONS } from '@ondc-sdk/shared/design-system';
 
 export interface SearchPreviewProps {
   query: string;
@@ -168,7 +168,13 @@ export function SearchPreview({ query, category, onSearch }: SearchPreviewProps)
               ) : (
                 <div style={GRID_STYLE}>
                   {previewResults.slice(0, 3).map((item) => (
-                    <ProductCard key={item.id} product={item} />
+                    <DramsProductCard
+                      key={item.id}
+                      name={item.name || item.descriptor?.name || 'Product'}
+                      category={item.category_id || item.category?.descriptor?.name}
+                      price={item.price?.value ? `${item.price.value} ${item.price.currency || 'INR'}` : 'Price on request'}
+                      image={item.images?.[0]?.url || item.descriptor?.images?.[0]?.url}
+                    />
                   ))}
                 </div>
               )}

@@ -1,4 +1,4 @@
-// Browser-safe types - copied from @ondc-agent/shared to avoid pulling in Node.js dependencies
+// Browser-safe types - copied from @ondc-sdk/shared to avoid pulling in Node.js dependencies
 // These are minimal type definitions needed for frontend apps
 
 // UCP types
