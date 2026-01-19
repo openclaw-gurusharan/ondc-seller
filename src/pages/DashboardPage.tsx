@@ -1,5 +1,5 @@
 import { useApi } from '../hooks/useApi';
-import { PageLayout, PageHeader, CARD, SPACING, TYPOGRAPHY, PILL_BUTTON, DRAMS, GRID } from '@ondc-sdk/shared/design-system';
+import { PageLayout, PageHeader, CARD, SPACING, TYPOGRAPHY, PILL_BUTTON, DRAMS, GRID } from '@drams-design/components';
 import { useNavigate } from 'react-router-dom';
 
 interface DashboardStats {

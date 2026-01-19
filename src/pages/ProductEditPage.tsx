@@ -12,7 +12,7 @@ import {
   TYPOGRAPHY,
   RADIUS,
   DRAMS,
-} from '@ondc-sdk/shared/design-system';
+} from '@drams-design/components';
 
 const CARD_STYLE = {
   ...CARD.base,

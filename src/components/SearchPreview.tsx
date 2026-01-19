@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
-import { DramsProductCard } from '@ondc-sdk/shared/design-system';
-import { DRAMS, SPACING, TYPOGRAPHY, RADIUS, BUTTON, TRANSITIONS } from '@ondc-sdk/shared/design-system';
+import { DramsProductCard } from '@drams-design/components';
+import { DRAMS, SPACING, TYPOGRAPHY, RADIUS, BUTTON, TRANSITIONS } from '@drams-design/components';
 
 export interface SearchPreviewProps {
   query: string;

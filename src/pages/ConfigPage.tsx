@@ -7,7 +7,7 @@ import {
   BUTTON,
   DRAMS,
   GRID,
-} from '@ondc-sdk/shared/design-system';
+} from '@drams-design/components';
 import { PageLayout, PageHeader, DramsInput, DramsButton } from '@drams-design/components';
 
 // Seller client configuration interface

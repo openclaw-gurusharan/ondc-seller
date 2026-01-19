@@ -12,7 +12,7 @@ import {
   TYPOGRAPHY,
   DRAMS,
   GRID,
-} from '@ondc-sdk/shared/design-system';
+} from '@drams-design/components';
 import type { BecknItem } from '@ondc-sdk/shared';
 
 const LOADING_STYLE: CSSProperties = {

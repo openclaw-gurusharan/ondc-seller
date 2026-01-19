@@ -1,4 +1,4 @@
-import { AgentChat, PageLayout, PageHeader } from '@ondc-sdk/shared/design-system';
+import { AgentChat, PageLayout, PageHeader } from '@drams-design/components';
 
 export function AgentChatPage(): React.ReactElement {
   return (

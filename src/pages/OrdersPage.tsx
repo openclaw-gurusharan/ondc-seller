@@ -14,7 +14,7 @@ import {
   RADIUS,
   TRANSITIONS,
   GRID,
-} from '@ondc-sdk/shared/design-system';
+} from '@drams-design/components';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
 
