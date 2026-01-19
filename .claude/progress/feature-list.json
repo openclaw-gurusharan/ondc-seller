@@ -1,0 +1,140 @@
+{
+  "project": "ondc-ucp-seller-portal",
+  "version": "1.0.0",
+  "features": [
+    {
+      "id": "mvp-001",
+      "description": "Add CI workflow for linting and formatting",
+      "tier": "mvp",
+      "priority": 10,
+      "status": "pending",
+      "acceptance": [
+        "GitHub workflow runs lint and format:check on PRs",
+        "Failures block merge"
+      ]
+    },
+    {
+      "id": "mvp-002",
+      "description": "Add preview deployment workflow",
+      "tier": "mvp",
+      "priority": 9,
+      "status": "pending",
+      "acceptance": [
+        "PRs trigger preview build",
+        "Build artifacts uploaded"
+      ]
+    },
+    {
+      "id": "mvp-003",
+      "description": "Write unit tests for DashboardPage",
+      "tier": "mvp",
+      "priority": 10,
+      "status": "pending",
+      "acceptance": [
+        "Test stats display",
+        "Test navigation to catalog"
+      ]
+    },
+    {
+      "id": "mvp-004",
+      "description": "Write unit tests for CatalogPage",
+      "tier": "mvp",
+      "priority": 10,
+      "status": "pending",
+      "acceptance": [
+        "Test loading state",
+        "Test error state",
+        "Test empty state",
+        "Test product rendering"
+      ]
+    },
+    {
+      "id": "mvp-005",
+      "description": "Write unit tests for OrdersPage",
+      "tier": "mvp",
+      "priority": 10,
+      "status": "pending",
+      "acceptance": [
+        "Test order list display",
+        "Test filtering"
+      ]
+    },
+    {
+      "id": "mvp-006",
+      "description": "Write unit tests for ConfigPage",
+      "tier": "mvp",
+      "priority": 10,
+      "status": "pending",
+      "acceptance": [
+        "Test form rendering",
+        "Test save functionality"
+      ]
+    },
+    {
+      "id": "core-001",
+      "description": "Add E2E tests with Playwright",
+      "tier": "core",
+      "priority": 20,
+      "status": "pending",
+      "acceptance": [
+        "Test catalog management flow",
+        "Test order processing flow"
+      ]
+    },
+    {
+      "id": "core-002",
+      "description": "Add API mock service for development",
+      "tier": "core",
+      "priority": 15,
+      "status": "pending",
+      "acceptance": [
+        "MSW or similar setup",
+        "Mock ONDC API responses"
+      ]
+    },
+    {
+      "id": "core-003",
+      "description": "Implement error boundary component",
+      "tier": "core",
+      "priority": 15,
+      "status": "pending",
+      "acceptance": [
+        "Catch React errors",
+        "Display friendly error UI"
+      ]
+    },
+    {
+      "id": "core-004",
+      "description": "Add loading skeleton states",
+      "tier": "core",
+      "priority": 14,
+      "status": "pending",
+      "acceptance": [
+        "Skeleton for catalog",
+        "Skeleton for orders"
+      ]
+    },
+    {
+      "id": "full-001",
+      "description": "Add dark mode support",
+      "tier": "full",
+      "priority": 30,
+      "status": "pending",
+      "acceptance": [
+        "Toggle in header",
+        "Persisted preference"
+      ]
+    },
+    {
+      "id": "full-002",
+      "description": "Add internationalization (i18n)",
+      "tier": "full",
+      "priority": 25,
+      "status": "pending",
+      "acceptance": [
+        "Support Hindi and English",
+        "Language selector in config"
+      ]
+    }
+  ]
+}

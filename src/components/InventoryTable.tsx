@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { BecknItem } from '@ondc-website/shared';
+import type { BecknItem } from '@ondc-agent/shared';
 import { CARD, DRAMS, BUTTON, SPACING, TYPOGRAPHY, RADIUS } from '@ondc-agent/shared/design-system';
 
 export interface InventoryTableProps {

@@ -1,6 +1,6 @@
 import { useState, useEffect, type CSSProperties } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import type { UCPOrder, UCPOrderStatus } from '@ondc-website/shared';
+import type { UCPOrder, UCPOrderStatus } from '@ondc-agent/shared';
 import {
   PageLayout,
   PageHeader,

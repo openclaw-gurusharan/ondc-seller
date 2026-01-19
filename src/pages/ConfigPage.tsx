@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
 import {
-  PageLayout,
-  PageHeader,
   CARD,
   COLORS,
   SPACING,
@@ -10,7 +8,7 @@ import {
   DRAMS,
   GRID,
 } from '@ondc-agent/shared/design-system';
-import { DramsInput, DramsButton } from '@ondc-agent/shared/design-system';
+import { PageLayout, PageHeader, DramsInput, DramsButton } from '@drams-design/components';
 
 // Seller client configuration interface
 interface SellerClientConfig {

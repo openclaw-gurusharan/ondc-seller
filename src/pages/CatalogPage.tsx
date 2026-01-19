@@ -13,7 +13,7 @@ import {
   DRAMS,
   GRID,
 } from '@ondc-agent/shared/design-system';
-import type { BecknItem } from '@ondc-website/shared';
+import type { BecknItem } from '@ondc-agent/shared';
 
 const LOADING_STYLE: CSSProperties = {
   display: 'flex',
@@ -106,10 +106,10 @@ export function CatalogPage() {
                   e.currentTarget.style.boxShadow = 'none';
                 }}
               >
-                {item.images?.[0] ? (
+                {(item as any).images?.[0] ? (
                   <img
-                    src={item.images[0].url}
-                    alt={item.descriptor?.name ?? item.name}
+                    src={(item as any).images[0].url}
+                    alt={item.descriptor?.name ?? (item as any).name}
                     style={{
                       width: '100%',
                       height: '180px',

@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useApi } from '@ondc-website/shared/hooks';
 import { ProductForm } from '../components';
-import type { BecknItem } from '@ondc-website/shared';
+import type { BecknItem } from '@ondc-agent/shared';
 import type { ProductFormData } from '../components/ProductForm';
 import {
   PageLayout,
