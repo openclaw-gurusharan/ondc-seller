@@ -64,7 +64,7 @@
       "description": "Write unit tests for ConfigPage",
       "tier": "mvp",
       "priority": 10,
-      "status": "pending",
+      "status": "implemented",
       "acceptance": [
         "Test form rendering",
         "Test save functionality"
