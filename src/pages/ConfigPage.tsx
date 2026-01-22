@@ -1,13 +1,5 @@
 import { useState, useEffect } from 'react';
-import {
-  CARD,
-  COLORS,
-  SPACING,
-  TYPOGRAPHY,
-  BUTTON,
-  DRAMS,
-  GRID,
-} from '@drams-design/components';
+import { CARD, COLORS, SPACING, TYPOGRAPHY, DRAMS } from '@drams-design/components';
 import { PageLayout, PageHeader, DramsInput, DramsButton } from '@drams-design/components';
 
 // Seller client configuration interface
@@ -60,15 +52,6 @@ const HELPER_TEXT_STYLE = {
   color: DRAMS.textLight,
 };
 
-const ERROR_STYLE = {
-  ...CARD.base,
-  backgroundColor: '#fef2f2',
-  borderColor: '#fecaca',
-  color: COLORS.error,
-  padding: SPACING.md,
-  marginBottom: SPACING.md,
-};
-
 export function ConfigPage() {
   const [config, setConfig] = useState<SellerClientConfig>({
     baseUrl: 'https://gateway.ondc.org',
@@ -115,7 +98,8 @@ export function ConfigPage() {
     if (!validateSubscriberId(config.subscriberId)) {
       validationErrors.push({
         field: 'subscriberId',
-        message: 'Subscriber ID must be at least 3 characters and contain only letters, numbers, dots, and hyphens',
+        message:
+          'Subscriber ID must be at least 3 characters and contain only letters, numbers, dots, and hyphens',
       });
     }
 
@@ -258,7 +242,13 @@ export function ConfigPage() {
             padding: SPACING.lg,
           }}
         >
-          <p style={{ margin: 0, ...TYPOGRAPHY.label, color: testResult.success ? '#166534' : '#dc2626' }}>
+          <p
+            style={{
+              margin: 0,
+              ...TYPOGRAPHY.label,
+              color: testResult.success ? '#166534' : '#dc2626',
+            }}
+          >
             {testResult.success ? '✓' : '✕'} {testResult.message}
           </p>
         </div>
@@ -364,9 +354,7 @@ export function ConfigPage() {
               Generate New Key Pair
             </DramsButton>
           </div>
-          <p style={HELPER_TEXT_STYLE}>
-            Ed25519 private key for signing ONDC requests
-          </p>
+          <p style={HELPER_TEXT_STYLE}>Ed25519 private key for signing ONDC requests</p>
         </div>
 
         {/* Key ID */}
@@ -417,9 +405,7 @@ export function ConfigPage() {
             onChange={(e) => setConfig({ ...config, domain: e.target.value })}
             placeholder="nic2004:52110"
           />
-          <p style={HELPER_TEXT_STYLE}>
-            ONDC domain code (default: nic2004:52110 for Retail)
-          </p>
+          <p style={HELPER_TEXT_STYLE}>ONDC domain code (default: nic2004:52110 for Retail)</p>
         </div>
 
         {/* City */}
@@ -440,9 +426,7 @@ export function ConfigPage() {
             onChange={(e) => setConfig({ ...config, city: e.target.value })}
             placeholder="std:080"
           />
-          <p style={HELPER_TEXT_STYLE}>
-            City code (e.g., std:080 for Bangalore)
-          </p>
+          <p style={HELPER_TEXT_STYLE}>City code (e.g., std:080 for Bangalore)</p>
         </div>
 
         {/* Country */}
@@ -464,9 +448,7 @@ export function ConfigPage() {
             placeholder="IND"
             maxLength={3}
           />
-          <p style={HELPER_TEXT_STYLE}>
-            ISO 3166-1 alpha-2 country code (default: IND for India)
-          </p>
+          <p style={HELPER_TEXT_STYLE}>ISO 3166-1 alpha-2 country code (default: IND for India)</p>
         </div>
       </div>
 

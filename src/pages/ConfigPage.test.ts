@@ -276,29 +276,17 @@ describe('Seller ConfigPage (SDK-SELLER-CONFIG-001)', () => {
     });
 
     it('should explain Generate New Key Pair action', () => {
-      const helpTopics = [
-        'Generate New Key Pair',
-        'Save Configuration',
-        'Test Connection',
-      ];
+      const helpTopics = ['Generate New Key Pair', 'Save Configuration', 'Test Connection'];
       expect(helpTopics).toContain('Generate New Key Pair');
     });
 
     it('should explain Save Configuration action', () => {
-      const helpTopics = [
-        'Generate New Key Pair',
-        'Save Configuration',
-        'Test Connection',
-      ];
+      const helpTopics = ['Generate New Key Pair', 'Save Configuration', 'Test Connection'];
       expect(helpTopics).toContain('Save Configuration');
     });
 
     it('should explain Test Connection action', () => {
-      const helpTopics = [
-        'Generate New Key Pair',
-        'Save Configuration',
-        'Test Connection',
-      ];
+      const helpTopics = ['Generate New Key Pair', 'Save Configuration', 'Test Connection'];
       expect(helpTopics).toContain('Test Connection');
     });
   });

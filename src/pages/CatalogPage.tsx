@@ -7,7 +7,6 @@ import {
   PageHeader,
   DRAMS_CARD,
   PILL_BUTTON,
-  CARD,
   SPACING,
   TYPOGRAPHY,
   DRAMS,
@@ -87,7 +86,9 @@ export function CatalogPage() {
         <div style={LOADING_STYLE}>Loading catalog...</div>
       ) : items.length === 0 ? (
         <div style={{ ...CARD_STYLE, textAlign: 'center', marginTop: SPACING.lg }}>
-          <p style={{ color: DRAMS.textLight, fontSize: TYPOGRAPHY.body.fontSize }}>No products found</p>
+          <p style={{ color: DRAMS.textLight, fontSize: TYPOGRAPHY.body.fontSize }}>
+            No products found
+          </p>
         </div>
       ) : (
         <>
@@ -135,16 +136,35 @@ export function CatalogPage() {
                     📦
                   </div>
                 )}
-                <h3 style={{ ...TYPOGRAPHY.label, color: DRAMS.textDark, margin: `0 0 ${SPACING.sm} 0` }}>
+                <h3
+                  style={{
+                    ...TYPOGRAPHY.label,
+                    color: DRAMS.textDark,
+                    margin: `0 0 ${SPACING.sm} 0`,
+                  }}
+                >
                   {item.descriptor?.name || 'Unnamed Product'}
                 </h3>
                 {item.price && (
-                  <p style={{ ...TYPOGRAPHY.label, color: DRAMS.orange, margin: `0 0 ${SPACING.md} 0` }}>
+                  <p
+                    style={{
+                      ...TYPOGRAPHY.label,
+                      color: DRAMS.orange,
+                      margin: `0 0 ${SPACING.md} 0`,
+                    }}
+                  >
                     {item.price.currency} {item.price.value}
                   </p>
                 )}
                 {item.descriptor?.short_desc && (
-                  <p style={{ ...TYPOGRAPHY.body, color: DRAMS.textLight, margin: `0 0 ${SPACING.md} 0`, lineHeight: 1.4 }}>
+                  <p
+                    style={{
+                      ...TYPOGRAPHY.body,
+                      color: DRAMS.textLight,
+                      margin: `0 0 ${SPACING.md} 0`,
+                      lineHeight: 1.4,
+                    }}
+                  >
                     {item.descriptor.short_desc}
                   </p>
                 )}
@@ -153,7 +173,11 @@ export function CatalogPage() {
           </div>
 
           <div style={{ marginTop: SPACING.xl }}>
-            <InventoryTable items={items} onEdit={handleEdit} onDelete={(id) => console.log('Delete', id)} />
+            <InventoryTable
+              items={items}
+              onEdit={handleEdit}
+              onDelete={(id) => console.log('Delete', id)}
+            />
           </div>
         </>
       )}

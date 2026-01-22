@@ -113,7 +113,16 @@ export interface UCPFulfillment {
   id?: string;
   type: string;
   state?: string;
-  status: 'pending' | 'searching_agent' | 'agent_assigned' | 'picking_up' | 'picked_up' | 'in_transit' | 'out_for_delivery' | 'delivered' | 'cancelled';
+  status:
+    | 'pending'
+    | 'searching_agent'
+    | 'agent_assigned'
+    | 'picking_up'
+    | 'picked_up'
+    | 'in_transit'
+    | 'out_for_delivery'
+    | 'delivered'
+    | 'cancelled';
   providerName?: string;
   estimatedTime?: { start?: string; end?: string };
   tracking?: {
@@ -276,10 +285,7 @@ export interface BecknContext {
   timestamp: string;
 }
 
-export type BecknDomain =
-  | 'nic2004:52110'
-  | 'nic2004:52211'
-  | 'nic2004:52311';
+export type BecknDomain = 'nic2004:52110' | 'nic2004:52211' | 'nic2004:52311';
 
 export type BecknAction =
   | 'search'
@@ -361,4 +367,3 @@ export interface UCPOrder {
     };
   };
 }
-

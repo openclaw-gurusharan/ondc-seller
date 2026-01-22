@@ -72,11 +72,11 @@ export function ProductForm({ product, onSubmit, onCancel, loading }: ProductFor
     categoryId: product?.category_id || 'cat-1',
   });
 
-  const handleInputChange = (field: keyof ProductFormData) => (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-  ) => {
-    setFormData({ ...formData, [field]: e.target.value });
-  };
+  const handleInputChange =
+    (field: keyof ProductFormData) =>
+    (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+      setFormData({ ...formData, [field]: e.target.value });
+    };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -98,11 +98,7 @@ export function ProductForm({ product, onSubmit, onCancel, loading }: ProductFor
           required
           style={product ? (disabled as React.CSSProperties) : undefined}
         />
-        {product && (
-          <p style={HELPER_TEXT_STYLE}>
-            Product ID cannot be changed after creation
-          </p>
-        )}
+        {product && <p style={HELPER_TEXT_STYLE}>Product ID cannot be changed after creation</p>}
       </div>
 
       <div style={CONTAINER_STYLE}>
@@ -160,7 +156,7 @@ export function ProductForm({ product, onSubmit, onCancel, loading }: ProductFor
               min="0"
               step="0.01"
               placeholder="100"
-                />
+            />
           </div>
           <DramsDropdown
             value={formData.currency}
@@ -175,12 +171,7 @@ export function ProductForm({ product, onSubmit, onCancel, loading }: ProductFor
         <DramsButton type="submit" loading={loading} variant="primary">
           {loading ? 'Saving...' : product ? 'Update Product' : 'Add Product'}
         </DramsButton>
-        <DramsButton
-          type="button"
-          onClick={onCancel}
-          disabled={loading}
-          variant="gray"
-        >
+        <DramsButton type="button" onClick={onCancel} disabled={loading} variant="gray">
           Cancel
         </DramsButton>
       </div>

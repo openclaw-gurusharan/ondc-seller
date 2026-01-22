@@ -40,6 +40,7 @@ kill_port $FRONTEND_PORT
 
 echo ""
 echo "Starting Vite dev server on port $FRONTEND_PORT..."
+mkdir -p logs
 nohup npm run dev > logs/vite.log 2>&1 &
 VITE_PID=$!
 

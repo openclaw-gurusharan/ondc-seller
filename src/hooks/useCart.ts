@@ -30,10 +30,11 @@ function getSessionId(): string {
 
 function calculateSubtotal(items: UCPSessionItem[]): number {
   return items.reduce((total, item) => {
-    const priceValue = typeof item.item.price?.value === 'string'
-      ? parseFloat(item.item.price.value)
-      : (item.item.price?.value ?? 0);
-    return total + (priceValue * item.quantity);
+    const priceValue =
+      typeof item.item.price?.value === 'string'
+        ? parseFloat(item.item.price.value)
+        : (item.item.price?.value ?? 0);
+    return total + priceValue * item.quantity;
   }, 0);
 }
 
@@ -74,61 +75,69 @@ export function useCart(): UseCartResult {
     refreshCart();
   }, [refreshCart]);
 
-  const addToCart = useCallback(async (item: BecknItem, quantity = 1) => {
-    setLoading(true);
-    setError(null);
+  const addToCart = useCallback(
+    async (item: BecknItem, quantity = 1) => {
+      setLoading(true);
+      setError(null);
 
-    try {
-      const data = await cartRequest(`${API_BASE}/api/cart`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sessionId, item, quantity }),
-      });
-      setSession(data.session);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to add item to cart');
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  }, [sessionId]);
+      try {
+        const data = await cartRequest(`${API_BASE}/api/cart`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ sessionId, item, quantity }),
+        });
+        setSession(data.session);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to add item to cart');
+        throw err;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [sessionId]
+  );
 
-  const removeFromCart = useCallback(async (itemId: string) => {
-    setLoading(true);
-    setError(null);
+  const removeFromCart = useCallback(
+    async (itemId: string) => {
+      setLoading(true);
+      setError(null);
 
-    try {
-      const data = await cartRequest(
-        `${API_BASE}/api/cart/${itemId}?sessionId=${sessionId}`,
-        { method: 'DELETE' }
-      );
-      setSession(data.session);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to remove item from cart');
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  }, [sessionId]);
+      try {
+        const data = await cartRequest(`${API_BASE}/api/cart/${itemId}?sessionId=${sessionId}`, {
+          method: 'DELETE',
+        });
+        setSession(data.session);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to remove item from cart');
+        throw err;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [sessionId]
+  );
 
-  const updateQuantity = useCallback(async (itemId: string, quantity: number) => {
-    setLoading(true);
-    setError(null);
+  const updateQuantity = useCallback(
+    async (itemId: string, quantity: number) => {
+      setLoading(true);
+      setError(null);
 
-    try {
-      const data = await cartRequest(`${API_BASE}/api/cart/${itemId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sessionId, quantity }),
-      });
-      setSession(data.session);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to update quantity');
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  }, [sessionId]);
+      try {
+        const data = await cartRequest(`${API_BASE}/api/cart/${itemId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ sessionId, quantity }),
+        });
+        setSession(data.session);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to update quantity');
+        throw err;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [sessionId]
+  );
 
   const clearError = useCallback(() => {
     setError(null);

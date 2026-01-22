@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate, Link, useLocation } from 'react-router-dom';
-import { DRAMS, NAV, SPACING, TYPOGRAPHY, TRANSITIONS } from '@drams-design/components';
+import { DRAMS, NAV, SPACING, TRANSITIONS } from '@drams-design/components';
 import { DashboardPage } from './pages/DashboardPage';
 import { CatalogPage } from './pages/CatalogPage';
 import { ProductEditPage } from './pages/ProductEditPage';
@@ -54,7 +54,8 @@ export function App() {
   const location = useLocation();
 
   const isActivePath = (path: string): boolean => {
-    if (path === '/' || path === '/dashboard') return location.pathname === '/' || location.pathname === '/dashboard';
+    if (path === '/' || path === '/dashboard')
+      return location.pathname === '/' || location.pathname === '/dashboard';
     return location.pathname.startsWith(path);
   };
 
@@ -86,7 +87,10 @@ export function App() {
                 }}
                 onMouseLeave={(e) => {
                   if (!isActivePath(path)) {
-                    Object.assign(e.currentTarget.style, { background: 'transparent', color: DRAMS.textDark });
+                    Object.assign(e.currentTarget.style, {
+                      background: 'transparent',
+                      color: DRAMS.textDark,
+                    });
                   }
                 }}
               >

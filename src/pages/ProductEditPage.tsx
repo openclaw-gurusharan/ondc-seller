@@ -11,7 +11,6 @@ import {
   SPACING,
   TYPOGRAPHY,
   RADIUS,
-  DRAMS,
 } from '@drams-design/components';
 
 const CARD_STYLE = {

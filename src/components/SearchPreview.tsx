@@ -1,11 +1,10 @@
 import { useState, useCallback } from 'react';
 import { DramsProductCard } from '@drams-design/components';
-import { DRAMS, SPACING, TYPOGRAPHY, RADIUS, BUTTON, TRANSITIONS } from '@drams-design/components';
+import { DRAMS, SPACING, TYPOGRAPHY, RADIUS, BUTTON } from '@drams-design/components';
 
 export interface SearchPreviewProps {
   query: string;
   category: string;
-  onSearch?: (query: string) => void;
 }
 
 const CONTAINER_STYLE = {
@@ -26,11 +25,6 @@ const DESCRIPTION_STYLE = {
   ...TYPOGRAPHY.body,
   color: DRAMS.textLight,
   margin: `0 0 ${SPACING.lg} 0`,
-};
-
-const BUTTON_STYLE = {
-  ...BUTTON.secondary,
-  transition: TRANSITIONS.hover,
 };
 
 const BUTTON_ACTIVE_STYLE = {
@@ -97,11 +91,10 @@ const EMPTY_STATE_TEXT_STYLE = {
   margin: '0',
 };
 
-export function SearchPreview({ query, category, onSearch }: SearchPreviewProps) {
+export function SearchPreview({ query, category }: SearchPreviewProps) {
   const [previewResults, setPreviewResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
-  const [isButtonHovered, setIsButtonHovered] = useState(false);
 
   const handlePreviewSearch = useCallback(async () => {
     if (!query) return;
@@ -126,9 +119,7 @@ export function SearchPreview({ query, category, onSearch }: SearchPreviewProps)
   return (
     <div style={CONTAINER_STYLE}>
       <h3 style={HEADER_STYLE}>Search Preview</h3>
-      <p style={DESCRIPTION_STYLE}>
-        See how your products appear in buyer search results
-      </p>
+      <p style={DESCRIPTION_STYLE}>See how your products appear in buyer search results</p>
 
       <button
         onClick={handlePreviewSearch}
@@ -137,8 +128,6 @@ export function SearchPreview({ query, category, onSearch }: SearchPreviewProps)
           ...(canSearch ? BUTTON_ACTIVE_STYLE : BUTTON_DISABLED_STYLE),
           ...(loading ? { opacity: 0.7 } : {}),
         }}
-        onMouseEnter={() => canSearch && setIsButtonHovered(true)}
-        onMouseLeave={() => setIsButtonHovered(false)}
       >
         {loading ? 'Loading...' : 'Preview Search Results'}
       </button>
@@ -158,7 +147,8 @@ export function SearchPreview({ query, category, onSearch }: SearchPreviewProps)
           ) : (
             <>
               <h4 style={RESULTS_HEADER_STYLE}>
-                Results for "{query}" ({previewResults.length} {previewResults.length === 1 ? 'item' : 'items'})
+                Results for "{query}" ({previewResults.length}{' '}
+                {previewResults.length === 1 ? 'item' : 'items'})
               </h4>
               {previewResults.length === 0 ? (
                 <div style={EMPTY_STATE_STYLE}>
@@ -172,7 +162,11 @@ export function SearchPreview({ query, category, onSearch }: SearchPreviewProps)
                       key={item.id}
                       name={item.name || item.descriptor?.name || 'Product'}
                       category={item.category_id || item.category?.descriptor?.name}
-                      price={item.price?.value ? `${item.price.value} ${item.price.currency || 'INR'}` : 'Price on request'}
+                      price={
+                        item.price?.value
+                          ? `${item.price.value} ${item.price.currency || 'INR'}`
+                          : 'Price on request'
+                      }
                       image={item.images?.[0]?.url || item.descriptor?.images?.[0]?.url}
                     />
                   ))}

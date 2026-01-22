@@ -114,17 +114,38 @@ describe('Seller OrdersPage (SDK-SELLER-ORDERS-002)', () => {
 
   describe('Status filters', () => {
     it('should support all required filter options', () => {
-      const filterOptions = ['all', 'pending', 'accepted', 'dispatched', 'completed', 'cancelled'] as const;
+      const filterOptions = [
+        'all',
+        'pending',
+        'accepted',
+        'dispatched',
+        'completed',
+        'cancelled',
+      ] as const;
       expect(filterOptions).toHaveLength(6);
     });
 
     it('should include pending filter', () => {
-      const filterOptions = ['all', 'pending', 'accepted', 'dispatched', 'completed', 'cancelled'] as const;
+      const filterOptions = [
+        'all',
+        'pending',
+        'accepted',
+        'dispatched',
+        'completed',
+        'cancelled',
+      ] as const;
       expect(filterOptions).toContain('pending');
     });
 
     it('should include cancelled filter', () => {
-      const filterOptions = ['all', 'pending', 'accepted', 'dispatched', 'completed', 'cancelled'] as const;
+      const filterOptions = [
+        'all',
+        'pending',
+        'accepted',
+        'dispatched',
+        'completed',
+        'cancelled',
+      ] as const;
       expect(filterOptions).toContain('cancelled');
     });
   });

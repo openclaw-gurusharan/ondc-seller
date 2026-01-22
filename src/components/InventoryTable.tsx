@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { BecknItem } from '@ondc-sdk/shared';
-import { CARD, DRAMS, BUTTON, SPACING, TYPOGRAPHY, RADIUS } from '@drams-design/components';
+import { CARD, DRAMS, BUTTON, SPACING, TYPOGRAPHY } from '@drams-design/components';
 
 export interface InventoryTableProps {
   items: BecknItem[];
@@ -68,7 +68,9 @@ export function InventoryTable({ items, onEdit, onDelete }: InventoryTableProps)
               onMouseLeave={() => setSelectedId(null)}
             >
               <td style={CELL_STYLE}>{item.descriptor?.name || 'Unknown'}</td>
-              <td style={CELL_STYLE}>{item.price?.value || 0} {item.price?.currency || 'INR'}</td>
+              <td style={CELL_STYLE}>
+                {item.price?.value || 0} {item.price?.currency || 'INR'}
+              </td>
               <td style={CELL_STYLE}>{item.category_id || '-'}</td>
               <td style={{ ...CELL_STYLE, display: 'flex', gap: SPACING.sm }}>
                 <button

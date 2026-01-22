@@ -5,7 +5,6 @@ import {
   PageLayout,
   PageHeader,
   CARD,
-  COLORS,
   SPACING,
   TYPOGRAPHY,
   BUTTON,
@@ -78,11 +77,19 @@ interface OrderCardProps {
   onAccept?: (orderId: string) => void;
   onReject?: (orderId: string) => void;
   onViewDetails?: (orderId: string) => void;
+  processing?: string | null;
 }
 
-export function OrderCard({ order, onAccept, onReject, onViewDetails }: OrderCardProps) {
+export function OrderCard({
+  order,
+  onAccept,
+  onReject,
+  onViewDetails,
+  processing,
+}: OrderCardProps) {
   const canAccept = isPendingStatus(order.status);
   const canReject = isPendingStatus(order.status);
+  const isProcessing = processing === order.id;
 
   const HEADER_STYLE = {
     display: 'flex',
@@ -139,9 +146,7 @@ export function OrderCard({ order, onAccept, onReject, onViewDetails }: OrderCar
     <div style={CARD.base}>
       <div style={HEADER_STYLE}>
         <div>
-          <div style={ORDER_ID_STYLE}>
-            Order #{order.id}
-          </div>
+          <div style={ORDER_ID_STYLE}>Order #{order.id}</div>
           <div style={DATE_STYLE}>
             {new Date(order.createdAt).toLocaleDateString('en-US', {
               year: 'numeric',
@@ -162,10 +167,7 @@ export function OrderCard({ order, onAccept, onReject, onViewDetails }: OrderCar
 
       <div style={{ marginBottom: SPACING.lg }}>
         {order.items.slice(0, 3).map((item) => (
-          <div
-            key={item.id}
-            style={ITEM_ROW_STYLE}
-          >
+          <div key={item.id} style={ITEM_ROW_STYLE}>
             <span style={{ color: DRAMS.textDark }}>
               {item.quantity}x {item.name}
             </span>
@@ -182,9 +184,7 @@ export function OrderCard({ order, onAccept, onReject, onViewDetails }: OrderCar
       </div>
 
       <div style={{ marginBottom: SPACING.lg }}>
-        <div style={INFO_ROW_STYLE}>
-          Customer: {order.buyer?.name}
-        </div>
+        <div style={INFO_ROW_STYLE}>Customer: {order.buyer?.name}</div>
         <div style={INFO_ROW_STYLE}>
           Delivery to: {order.deliveryAddress?.city}, {order.deliveryAddress?.state}
         </div>
@@ -192,14 +192,21 @@ export function OrderCard({ order, onAccept, onReject, onViewDetails }: OrderCar
 
       <div style={FOOTER_STYLE}>
         <div style={TOTAL_STYLE}>
-          Total: {order.quote?.total?.currency} {order.quote?.total?.value ?? order.quote?.total?.amount}
+          Total: {order.quote?.total?.currency}{' '}
+          {order.quote?.total?.value ?? order.quote?.total?.amount}
         </div>
 
         <div style={ACTIONS_STYLE}>
           {canAccept && onAccept && (
             <button
               onClick={() => onAccept(order.id)}
-              style={{ ...BUTTON.primary, padding: `${SPACING.md} ${SPACING.lg}`, ...TYPOGRAPHY.bodySmall }}
+              disabled={isProcessing}
+              style={{
+                ...BUTTON.primary,
+                padding: `${SPACING.md} ${SPACING.lg}`,
+                ...TYPOGRAPHY.bodySmall,
+                ...(isProcessing ? { opacity: 0.5 } : {}),
+              }}
             >
               Accept
             </button>
@@ -207,14 +214,24 @@ export function OrderCard({ order, onAccept, onReject, onViewDetails }: OrderCar
           {canReject && onReject && (
             <button
               onClick={() => onReject(order.id)}
-              style={{ ...BUTTON.danger, padding: `${SPACING.md} ${SPACING.lg}`, ...TYPOGRAPHY.bodySmall }}
+              disabled={isProcessing}
+              style={{
+                ...BUTTON.danger,
+                padding: `${SPACING.md} ${SPACING.lg}`,
+                ...TYPOGRAPHY.bodySmall,
+                ...(isProcessing ? { opacity: 0.5 } : {}),
+              }}
             >
               Reject
             </button>
           )}
           <button
             onClick={() => onViewDetails?.(order.id)}
-            style={{ ...BUTTON.secondary, padding: `${SPACING.md} ${SPACING.lg}`, ...TYPOGRAPHY.bodySmall }}
+            style={{
+              ...BUTTON.secondary,
+              padding: `${SPACING.md} ${SPACING.lg}`,
+              ...TYPOGRAPHY.bodySmall,
+            }}
           >
             View Details
           </button>
@@ -253,45 +270,51 @@ export function OrdersPage() {
     loadOrders();
   }, [loadOrders]);
 
-  const handleAccept = useCallback(async (orderId: string) => {
-    setProcessing(orderId);
-    try {
-      const response = await fetch(`${API_BASE}/api/seller/orders/${orderId}/accept`, {
-        method: 'POST',
-      });
-      if (!response.ok) {
-        throw new Error('Failed to accept order');
+  const handleAccept = useCallback(
+    async (orderId: string) => {
+      setProcessing(orderId);
+      try {
+        const response = await fetch(`${API_BASE}/api/seller/orders/${orderId}/accept`, {
+          method: 'POST',
+        });
+        if (!response.ok) {
+          throw new Error('Failed to accept order');
+        }
+        await loadOrders();
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to accept order');
+      } finally {
+        setProcessing(null);
       }
-      await loadOrders();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to accept order');
-    } finally {
-      setProcessing(null);
-    }
-  }, [loadOrders]);
+    },
+    [loadOrders]
+  );
 
-  const handleReject = useCallback(async (orderId: string) => {
-    if (!confirm('Are you sure you want to reject this order?')) {
-      return;
-    }
-
-    setProcessing(orderId);
-    try {
-      const response = await fetch(`${API_BASE}/api/seller/orders/${orderId}/reject`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ reason: 'Seller rejected' }),
-      });
-      if (!response.ok) {
-        throw new Error('Failed to reject order');
+  const handleReject = useCallback(
+    async (orderId: string) => {
+      if (!confirm('Are you sure you want to reject this order?')) {
+        return;
       }
-      await loadOrders();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to reject order');
-    } finally {
-      setProcessing(null);
-    }
-  }, [loadOrders]);
+
+      setProcessing(orderId);
+      try {
+        const response = await fetch(`${API_BASE}/api/seller/orders/${orderId}/reject`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ reason: 'Seller rejected' }),
+        });
+        if (!response.ok) {
+          throw new Error('Failed to reject order');
+        }
+        await loadOrders();
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to reject order');
+      } finally {
+        setProcessing(null);
+      }
+    },
+    [loadOrders]
+  );
 
   const handleViewDetails = useCallback(
     (orderId: string) => {
@@ -324,14 +347,14 @@ export function OrdersPage() {
   if (error) {
     return (
       <PageLayout>
-        <PageHeader
-          title="Incoming Orders"
-          subtitle="Manage and track all your customer orders"
-        />
+        <PageHeader title="Incoming Orders" subtitle="Manage and track all your customer orders" />
         <div style={{ ...BADGE.error, padding: SPACING.lg }}>
           <p style={{ margin: 0, ...TYPOGRAPHY.label }}>Error</p>
           <p style={{ margin: `${SPACING.xs} 0 0 0` }}>{error}</p>
-          <button onClick={loadOrders} style={{ marginTop: SPACING.lg, ...BUTTON.secondary, ...TYPOGRAPHY.body }}>
+          <button
+            onClick={loadOrders}
+            style={{ marginTop: SPACING.lg, ...BUTTON.secondary, ...TYPOGRAPHY.body }}
+          >
             Retry
           </button>
         </div>
@@ -339,7 +362,14 @@ export function OrdersPage() {
     );
   }
 
-  const filterOptions: StatusFilter[] = ['all', 'pending', 'accepted', 'dispatched', 'completed', 'cancelled'];
+  const filterOptions: StatusFilter[] = [
+    'all',
+    'pending',
+    'accepted',
+    'dispatched',
+    'completed',
+    'cancelled',
+  ];
 
   // DRAMS: Pill-style filter tabs
   const FILTERS_STYLE = {
@@ -364,10 +394,7 @@ export function OrdersPage() {
 
   return (
     <PageLayout>
-      <PageHeader
-        title="Incoming Orders"
-        subtitle="Manage and track all your customer orders"
-      />
+      <PageHeader title="Incoming Orders" subtitle="Manage and track all your customer orders" />
 
       <div style={FILTERS_STYLE}>
         {filterOptions.map((filterOption) => {
@@ -391,7 +418,9 @@ export function OrdersPage() {
       </div>
 
       {filteredOrders.length === 0 ? (
-        <div style={{ ...CARD.base, textAlign: 'center', padding: `${SPACING['3xl']} ${SPACING.xl}` }}>
+        <div
+          style={{ ...CARD.base, textAlign: 'center', padding: `${SPACING['3xl']} ${SPACING.xl}` }}
+        >
           <p style={{ ...TYPOGRAPHY.h3, color: DRAMS.textDark, margin: `0 0 ${SPACING.sm} 0` }}>
             {filter === 'all' ? 'No incoming orders yet' : `No ${filter} orders`}
           </p>
@@ -410,6 +439,7 @@ export function OrdersPage() {
               onAccept={handleAccept}
               onReject={handleReject}
               onViewDetails={handleViewDetails}
+              processing={processing}
             />
           ))}
         </div>

@@ -17,7 +17,8 @@ const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
 
 const canAcceptOrder = (status: UCPOrderStatus): boolean => status === 'created';
 const canRejectOrder = (status: UCPOrderStatus): boolean => status === 'created';
-const canDispatchOrder = (status: UCPOrderStatus): boolean => ['accepted', 'packed'].includes(status);
+const canDispatchOrder = (status: UCPOrderStatus): boolean =>
+  ['accepted', 'packed'].includes(status);
 
 const getStatusLabel = (status: UCPOrderStatus): string => {
   const labels: Record<UCPOrderStatus, string> = {
@@ -59,7 +60,10 @@ const getOrderTimeline = (order: UCPOrder): TimelineEvent[] => {
     },
   ];
 
-  if (order.status === 'accepted' || ['accepted', 'packed', 'shipped', 'out_for_delivery', 'delivered'].includes(order.status)) {
+  if (
+    order.status === 'accepted' ||
+    ['accepted', 'packed', 'shipped', 'out_for_delivery', 'delivered'].includes(order.status)
+  ) {
     events.push({
       status: 'accepted',
       label: 'Order Accepted',
@@ -200,7 +204,9 @@ export function OrderDetailPage() {
     if (!order || !id) return;
     setProcessing('accept');
     try {
-      const response = await fetch(`${API_BASE}/api/seller/orders/${id}/accept`, { method: 'POST' });
+      const response = await fetch(`${API_BASE}/api/seller/orders/${id}/accept`, {
+        method: 'POST',
+      });
       if (!response.ok) throw new Error('Failed to accept order');
       const data = await response.json();
       setOrder(data.order);
@@ -293,7 +299,17 @@ export function OrderDetailPage() {
         ← Back to Orders
       </button>
 
-      <div style={{ ...CARD.base, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: SPACING.lg, paddingBottom: SPACING.lg, borderBottom: `1px solid ${DRAMS.grayTrack}` }}>
+      <div
+        style={{
+          ...CARD.base,
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'flex-start',
+          marginBottom: SPACING.lg,
+          paddingBottom: SPACING.lg,
+          borderBottom: `1px solid ${DRAMS.grayTrack}`,
+        }}
+      >
         <div>
           <h1 style={{ ...TYPOGRAPHY.h2, margin: `0 0 ${SPACING.sm} 0` }}>Order #{order.id}</h1>
           <p style={{ ...TYPOGRAPHY.bodySmall, color: DRAMS.textLight, margin: 0 }}>
@@ -307,7 +323,9 @@ export function OrderDetailPage() {
             })}
           </p>
         </div>
-        <div style={{ ...STATUS_BADGE_STYLE, backgroundColor: `${statusColor}15`, color: statusColor }}>
+        <div
+          style={{ ...STATUS_BADGE_STYLE, backgroundColor: `${statusColor}15`, color: statusColor }}
+        >
           {getStatusLabel(order.status)}
         </div>
       </div>
@@ -355,7 +373,9 @@ export function OrderDetailPage() {
       </div>
 
       {order.cancellation && (
-        <div style={{ ...SECTION_CARD_STYLE, backgroundColor: '#fef2f2', border: '1px solid #fecaca' }}>
+        <div
+          style={{ ...SECTION_CARD_STYLE, backgroundColor: '#fef2f2', border: '1px solid #fecaca' }}
+        >
           <p style={{ ...TYPOGRAPHY.label, margin: `0 0 ${SPACING.sm} 0`, color: '#991b1b' }}>
             Order Cancelled
           </p>
@@ -384,7 +404,9 @@ export function OrderDetailPage() {
       <div style={{ marginBottom: SPACING.xl }}>
         <h3 style={SECTION_TITLE_STYLE}>Delivery Address</h3>
         <div style={{ ...TYPOGRAPHY.body, lineHeight: 1.6, color: DRAMS.textDark }}>
-          <p style={{ ...TYPOGRAPHY.h4, margin: `0 0 ${SPACING.xs} 0` }}>{order.deliveryAddress?.line1}</p>
+          <p style={{ ...TYPOGRAPHY.h4, margin: `0 0 ${SPACING.xs} 0` }}>
+            {order.deliveryAddress?.line1}
+          </p>
           {order.deliveryAddress?.line2 && (
             <p style={{ margin: `0 0 ${SPACING.xs} 0` }}>{order.deliveryAddress.line2}</p>
           )}
@@ -417,7 +439,14 @@ export function OrderDetailPage() {
         </div>
       </div>
 
-      <div style={{ ...SECTION_CARD_STYLE, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div
+        style={{
+          ...SECTION_CARD_STYLE,
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
         <span style={{ ...TYPOGRAPHY.h3 }}>Order Total</span>
         <span style={{ ...TYPOGRAPHY.h2, color: DRAMS.orange }}>
           {order.quote?.total?.currency} {order.quote?.total?.value ?? order.quote?.total?.amount}
@@ -460,7 +489,9 @@ export function OrderDetailPage() {
         <div style={SECTION_CARD_STYLE}>
           <h3 style={{ ...TYPOGRAPHY.h4, margin: `0 0 ${SPACING.md} 0` }}>Tracking Information</h3>
           {order.fulfillment.tracking.id && (
-            <p style={{ ...TYPOGRAPHY.body, margin: `0 0 ${SPACING.xs} 0`, color: DRAMS.textLight }}>
+            <p
+              style={{ ...TYPOGRAPHY.body, margin: `0 0 ${SPACING.xs} 0`, color: DRAMS.textLight }}
+            >
               Tracking ID: {order.fulfillment.tracking.id}
             </p>
           )}

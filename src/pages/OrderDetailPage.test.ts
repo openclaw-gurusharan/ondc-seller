@@ -45,17 +45,35 @@ describe('Seller OrderDetailPage (SDK-SELLER-ORDERS-003)', () => {
 
   describe('Order timeline', () => {
     it('should include order placed event', () => {
-      const timelineEvents = ['Order Placed', 'Order Accepted', 'Order Packed', 'Order Dispatched', 'Order Cancelled'];
+      const timelineEvents = [
+        'Order Placed',
+        'Order Accepted',
+        'Order Packed',
+        'Order Dispatched',
+        'Order Cancelled',
+      ];
       expect(timelineEvents).toContain('Order Placed');
     });
 
     it('should include order accepted event', () => {
-      const timelineEvents = ['Order Placed', 'Order Accepted', 'Order Packed', 'Order Dispatched', 'Order Cancelled'];
+      const timelineEvents = [
+        'Order Placed',
+        'Order Accepted',
+        'Order Packed',
+        'Order Dispatched',
+        'Order Cancelled',
+      ];
       expect(timelineEvents).toContain('Order Accepted');
     });
 
     it('should include order cancelled event when cancelled', () => {
-      const timelineEvents = ['Order Placed', 'Order Accepted', 'Order Packed', 'Order Dispatched', 'Order Cancelled'];
+      const timelineEvents = [
+        'Order Placed',
+        'Order Accepted',
+        'Order Packed',
+        'Order Dispatched',
+        'Order Cancelled',
+      ];
       expect(timelineEvents).toContain('Order Cancelled');
     });
 
