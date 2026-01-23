@@ -8,9 +8,9 @@ export function LoginPage() {
   const returnUrl = searchParams.get('returnUrl') || '/';
 
   useEffect(() => {
-    const identityUrl = import.meta.env.VITE_IDENTITY_URL || config.identityUrl;
+    const identityWebUrl = import.meta.env.VITE_IDENTITY_WEB_URL || config.identityWebUrl;
     const returnTo = encodeURIComponent(window.location.origin + returnUrl);
-    window.location.href = `${identityUrl}/login?returnUrl=${returnTo}`;
+    window.location.href = `${identityWebUrl}/login?returnUrl=${returnTo}`;
   }, [returnUrl]);
 
   return (

@@ -1,7 +1,7 @@
 {
   "state": "INIT",
   "entered_at": "2026-01-19T18:45:10+05:30",
-  "health_status": "UNKNOWN",
+  "health_status": "BROKEN",
   "history": [
     {
       "from": "START",

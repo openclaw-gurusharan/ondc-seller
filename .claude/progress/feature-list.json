@@ -7,7 +7,7 @@
       "description": "Add CI workflow for linting and formatting",
       "tier": "mvp",
       "priority": 10,
-      "status": "pending",
+      "status": "implemented",
       "acceptance": [
         "GitHub workflow runs lint and format:check on PRs",
         "Failures block merge"
@@ -134,6 +134,70 @@
       "acceptance": [
         "Support Hindi and English",
         "Language selector in config"
+      ]
+    },
+    {
+      "id": "SSO-001",
+      "description": "SSO: Auth hook with cookie validation (src/hooks/useAuth.ts)",
+      "tier": "mvp",
+      "priority": 10,
+      "status": "pending",
+      "acceptance": [
+        "useAuth() hook with user state",
+        "Fetch user from https://aadharcha.in/api/auth/me with credentials: include",
+        "login() redirects to aadharcha.in/login",
+        "logout() calls aadharcha.in/api/auth/logout",
+        "isAuthenticated boolean flag"
+      ]
+    },
+    {
+      "id": "SSO-002",
+      "description": "SSO: API client with session support (src/lib/api.ts)",
+      "tier": "mvp",
+      "priority": 10,
+      "status": "pending",
+      "acceptance": [
+        "Fetch/axios wrapper with credentials: include",
+        "Session validation before API calls",
+        "Auto-redirect to aadharcha.in/login if not authenticated",
+        "X-User-ID header for user identification"
+      ]
+    },
+    {
+      "id": "SSO-003",
+      "description": "SSO: Protected route wrapper",
+      "tier": "mvp",
+      "priority": 10,
+      "status": "pending",
+      "acceptance": [
+        "ProtectedRoute component",
+        "Validate session before rendering",
+        "Redirect to aadharcha.in/login if not authenticated",
+        "Loading state during validation"
+      ]
+    },
+    {
+      "id": "SSO-004",
+      "description": "SSO: Environment configuration",
+      "tier": "mvp",
+      "priority": 10,
+      "status": "pending",
+      "acceptance": [
+        "VITE_IDENTITY_URL=https://aadharcha.in",
+        "Local: VITE_IDENTITY_URL=http://localhost:3000",
+        "Config typed and exported"
+      ]
+    },
+    {
+      "id": "SSO-005",
+      "description": "SSO: Login page redirect",
+      "tier": "mvp",
+      "priority": 10,
+      "status": "pending",
+      "acceptance": [
+        "/login page redirects to aadharcha.in/login",
+        "Return URL parameter for redirect back",
+        "Loading message while redirecting"
       ]
     }
   ]
