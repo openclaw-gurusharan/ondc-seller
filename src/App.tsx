@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate, Link, useLocation } from 'react-router-dom';
-import { DRAMS, NAV, SPACING, TRANSITIONS, BUTTON } from '@drams-design/components';
+import { DRAMS, NAV, SPACING, TRANSITIONS } from '@drams-design/components';
 import { DashboardPage } from './pages/DashboardPage';
 import { CatalogPage } from './pages/CatalogPage';
 import { ProductEditPage } from './pages/ProductEditPage';
@@ -10,6 +10,8 @@ import { ConfigPage } from './pages/ConfigPage';
 import { LoginPage } from './pages/LoginPage';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { useAuth } from './hooks/useAuth';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 
 // DRAMS: Clean white background, minimal chrome
 const APP_CONTAINER_STYLE = {
@@ -65,7 +67,8 @@ const WALLET_TEXT_STYLE = {
 };
 
 function Header() {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
+  const { publicKey } = useWallet();
   const location = useLocation();
 
   const isActivePath = (path: string): boolean => {
@@ -112,16 +115,21 @@ function Header() {
             </Link>
           ))}
         </nav>
-        {user && (
-          <div style={USER_SECTION_STYLE}>
+        <div style={USER_SECTION_STYLE}>
+          {user && (
             <span style={WALLET_TEXT_STYLE}>
               {user.wallet_address.slice(0, 6)}...{user.wallet_address.slice(-4)}
             </span>
-            <button style={BUTTON.primary} onClick={() => logout()}>
-              Logout
-            </button>
-          </div>
-        )}
+          )}
+          <WalletMultiButton
+            style={{
+              backgroundColor: publicKey ? DRAMS.grayTrack : DRAMS.orange,
+              borderRadius: '48px',
+              fontSize: '12px',
+              padding: '6px 16px',
+            }}
+          />
+        </div>
       </div>
     </header>
   );
