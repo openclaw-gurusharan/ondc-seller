@@ -33,7 +33,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = (returnUrl = '/') => {
     const encodedReturn = encodeURIComponent(window.location.origin + returnUrl);
-    window.location.href = `${config.identityUrl}/login?returnUrl=${encodedReturn}`;
+    // Use identityWebUrl for login page (frontend), not gateway
+    window.location.href = `${config.identityWebUrl}/login?returnUrl=${encodedReturn}`;
   };
 
   const logout = async () => {
