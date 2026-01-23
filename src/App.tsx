@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate, Link, useLocation } from 'react-router-dom';
-import { DRAMS, NAV, SPACING, TRANSITIONS } from '@drams-design/components';
+import { DRAMS, NAV, SPACING, TRANSITIONS, BUTTON } from '@drams-design/components';
 import { DashboardPage } from './pages/DashboardPage';
 import { CatalogPage } from './pages/CatalogPage';
 import { ProductEditPage } from './pages/ProductEditPage';
@@ -7,6 +7,9 @@ import { AgentChatPage } from './pages/AgentChatPage';
 import { OrdersPage } from './pages/OrdersPage';
 import { OrderDetailPage } from './pages/OrderDetailPage';
 import { ConfigPage } from './pages/ConfigPage';
+import { LoginPage } from './pages/LoginPage';
+import { ProtectedRoute } from './components/ProtectedRoute';
+import { useAuth } from './hooks/useAuth';
 
 // DRAMS: Clean white background, minimal chrome
 const APP_CONTAINER_STYLE = {
@@ -50,7 +53,19 @@ const NAV_STYLE = {
   alignItems: 'center',
 };
 
-export function App() {
+const USER_SECTION_STYLE = {
+  display: 'flex',
+  gap: SPACING.sm,
+  alignItems: 'center',
+};
+
+const WALLET_TEXT_STYLE = {
+  fontSize: '12px',
+  color: DRAMS.textLight,
+};
+
+function Header() {
+  const { user, logout } = useAuth();
   const location = useLocation();
 
   const isActivePath = (path: string): boolean => {
@@ -60,57 +75,76 @@ export function App() {
   };
 
   return (
+    <header style={HEADER_STYLE}>
+      <div style={HEADER_CONTENT_STYLE}>
+        <Link to="/" style={LOGO_STYLE}>
+          Ondc Seller
+        </Link>
+        <nav style={NAV_STYLE}>
+          {[
+            { path: '/catalog', label: 'Catalog' },
+            { path: '/orders', label: 'Orders' },
+            { path: '/config', label: 'Config' },
+            { path: '/agent', label: 'Agent' },
+          ].map(({ path, label }) => (
+            <Link
+              key={path}
+              to={path}
+              style={{
+                ...NAV.link,
+                ...(isActivePath(path) ? NAV.linkActive : {}),
+              }}
+              onMouseEnter={(e) => {
+                if (!isActivePath(path)) {
+                  Object.assign(e.currentTarget.style, NAV.linkHover);
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!isActivePath(path)) {
+                  Object.assign(e.currentTarget.style, {
+                    background: 'transparent',
+                    color: DRAMS.textDark,
+                  });
+                }
+              }}
+            >
+              {label}
+            </Link>
+          ))}
+        </nav>
+        {user && (
+          <div style={USER_SECTION_STYLE}>
+            <span style={WALLET_TEXT_STYLE}>
+              {user.wallet_address.slice(0, 6)}...{user.wallet_address.slice(-4)}
+            </span>
+            <button style={BUTTON.primary} onClick={() => logout()}>
+              Logout
+            </button>
+          </div>
+        )}
+      </div>
+    </header>
+  );
+}
+
+export function App() {
+  return (
     <div style={APP_CONTAINER_STYLE}>
-      <header style={HEADER_STYLE}>
-        <div style={HEADER_CONTENT_STYLE}>
-          <Link to="/" style={LOGO_STYLE}>
-            Ondc Seller
-          </Link>
-          <nav style={NAV_STYLE}>
-            {[
-              { path: '/catalog', label: 'Catalog' },
-              { path: '/orders', label: 'Orders' },
-              { path: '/config', label: 'Config' },
-              { path: '/agent', label: 'Agent' },
-            ].map(({ path, label }) => (
-              <Link
-                key={path}
-                to={path}
-                style={{
-                  ...NAV.link,
-                  ...(isActivePath(path) ? NAV.linkActive : {}),
-                }}
-                onMouseEnter={(e) => {
-                  if (!isActivePath(path)) {
-                    Object.assign(e.currentTarget.style, NAV.linkHover);
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (!isActivePath(path)) {
-                    Object.assign(e.currentTarget.style, {
-                      background: 'transparent',
-                      color: DRAMS.textDark,
-                    });
-                  }
-                }}
-              >
-                {label}
-              </Link>
-            ))}
-          </nav>
-        </div>
-      </header>
+      <Header />
       <main>
         <Routes>
-          <Route path="/" element={<DashboardPage />} />
-          <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/catalog" element={<CatalogPage />} />
-          <Route path="/catalog/new" element={<ProductEditPage />} />
-          <Route path="/catalog/:id" element={<ProductEditPage />} />
-          <Route path="/orders" element={<OrdersPage />} />
-          <Route path="/orders/:id" element={<OrderDetailPage />} />
-          <Route path="/config" element={<ConfigPage />} />
-          <Route path="/agent" element={<AgentChatPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/" element={<DashboardPage />} />
+            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/catalog" element={<CatalogPage />} />
+            <Route path="/catalog/new" element={<ProductEditPage />} />
+            <Route path="/catalog/:id" element={<ProductEditPage />} />
+            <Route path="/orders" element={<OrdersPage />} />
+            <Route path="/orders/:id" element={<OrderDetailPage />} />
+            <Route path="/config" element={<ConfigPage />} />
+            <Route path="/agent" element={<AgentChatPage />} />
+          </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>

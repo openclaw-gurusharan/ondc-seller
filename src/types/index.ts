@@ -1,3 +1,21 @@
+// Auth types
+export interface AuthUser {
+  wallet_address: string;
+  pda_address?: string;
+  owner_pubkey?: string;
+  created_at: number;
+}
+
+export interface AuthContextValue {
+  user: AuthUser | null;
+  isAuthenticated: boolean;
+  loading: boolean;
+  error: string | null;
+  login: (returnUrl?: string) => void;
+  logout: () => Promise<void>;
+  refresh: () => Promise<void>;
+}
+
 // Browser-safe types - copied from @ondc-sdk/shared to avoid pulling in Node.js dependencies
 // These are minimal type definitions needed for frontend apps
 
