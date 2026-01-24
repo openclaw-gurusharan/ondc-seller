@@ -1,5 +1,6 @@
-import { Routes, Route, Navigate, Link, useLocation } from 'react-router-dom';
-import { DRAMS, NAV, SPACING, TRANSITIONS } from '@drams-design/components';
+import { Routes, Route, Navigate, Link, useLocation, useNavigate } from 'react-router-dom';
+import { DRAMS, NAV, SPACING, TYPOGRAPHY, TRANSITIONS } from '@drams-design/components';
+import { RollingSearch } from '@drams-design/components';
 import { DashboardPage } from './pages/DashboardPage';
 import { CatalogPage } from './pages/CatalogPage';
 import { ProductEditPage } from './pages/ProductEditPage';
@@ -7,10 +8,7 @@ import { AgentChatPage } from './pages/AgentChatPage';
 import { OrdersPage } from './pages/OrdersPage';
 import { OrderDetailPage } from './pages/OrderDetailPage';
 import { ConfigPage } from './pages/ConfigPage';
-import { LoginPage } from './pages/LoginPage';
-import { ProtectedRoute } from './components/ProtectedRoute';
 import { useAuth } from './hooks/useAuth';
-import { useWallet } from '@solana/wallet-adapter-react';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 
 // DRAMS: Clean white background, minimal chrome
@@ -19,6 +17,8 @@ const APP_CONTAINER_STYLE = {
   minHeight: '100vh',
   backgroundColor: '#ffffff',
   fontFamily: DRAMS.fontFamily,
+  display: 'flex',
+  flexDirection: 'column' as const,
 };
 
 // DRAMS: Unobtrusive header with soft shadow
@@ -55,21 +55,32 @@ const NAV_STYLE = {
   alignItems: 'center',
 };
 
-const USER_SECTION_STYLE = {
-  display: 'flex',
-  gap: SPACING.sm,
-  alignItems: 'center',
-};
+// DRAMS: Navigation link with built-in hover states using CSS
+const NAV_LINK_CLASS = 'drams-nav-link';
 
-const WALLET_TEXT_STYLE = {
-  fontSize: '12px',
-  color: DRAMS.textLight,
-};
+// Inject CSS for nav link hover states
+const NAV_STYLES = `
+  .${NAV_LINK_CLASS} {
+    padding: ${SPACING.sm} ${SPACING.lg};
+    border-radius: 48px;
+    text-decoration: none;
+    color: ${DRAMS.textDark};
+    ${TYPOGRAPHY.body}
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .${NAV_LINK_CLASS}:hover:not(.${NAV_LINK_CLASS}-active) {
+    background: ${DRAMS.grayTrack};
+  }
+  .${NAV_LINK_CLASS}-active {
+    background: ${DRAMS.orange};
+    color: white;
+  }
+`;
 
-function Header() {
-  const { user } = useAuth();
-  const { publicKey } = useWallet();
+export function App() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user } = useAuth();
 
   const isActivePath = (path: string): boolean => {
     if (path === '/' || path === '/dashboard')
@@ -77,72 +88,49 @@ function Header() {
     return location.pathname.startsWith(path);
   };
 
-  return (
-    <header style={HEADER_STYLE}>
-      <div style={HEADER_CONTENT_STYLE}>
-        <Link to="/" style={LOGO_STYLE}>
-          Ondc Seller
-        </Link>
-        <nav style={NAV_STYLE}>
-          {[
-            { path: '/catalog', label: 'Catalog' },
-            { path: '/orders', label: 'Orders' },
-            { path: '/config', label: 'Config' },
-            { path: '/agent', label: 'Agent' },
-          ].map(({ path, label }) => (
-            <Link
-              key={path}
-              to={path}
-              style={{
-                ...NAV.link,
-                ...(isActivePath(path) ? NAV.linkActive : {}),
-              }}
-              onMouseEnter={(e) => {
-                if (!isActivePath(path)) {
-                  Object.assign(e.currentTarget.style, NAV.linkHover);
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!isActivePath(path)) {
-                  Object.assign(e.currentTarget.style, {
-                    background: 'transparent',
-                    color: DRAMS.textDark,
-                  });
-                }
-              }}
-            >
-              {label}
-            </Link>
-          ))}
-        </nav>
-        <div style={USER_SECTION_STYLE}>
-          {user && (
-            <span style={WALLET_TEXT_STYLE}>
-              {user.wallet_address.slice(0, 6)}...{user.wallet_address.slice(-4)}
-            </span>
-          )}
-          <WalletMultiButton
-            style={{
-              backgroundColor: publicKey ? DRAMS.grayTrack : DRAMS.orange,
-              borderRadius: '48px',
-              fontSize: '12px',
-              padding: '6px 16px',
-            }}
-          />
-        </div>
-      </div>
-    </header>
-  );
-}
+  const handleSearch = (query: string) => {
+    navigate(`/catalog?q=${encodeURIComponent(query)}`);
+  };
 
-export function App() {
   return (
-    <div style={APP_CONTAINER_STYLE}>
-      <Header />
-      <main>
-        <Routes>
-          <Route path="/login" element={<LoginPage />} />
-          <Route element={<ProtectedRoute />}>
+    <>
+      <style>{NAV_STYLES}</style>
+      <div style={APP_CONTAINER_STYLE}>
+        <header style={HEADER_STYLE}>
+          <div style={HEADER_CONTENT_STYLE}>
+            <Link to="/" style={LOGO_STYLE}>
+              Ondc Seller
+            </Link>
+            <nav style={NAV_STYLE}>
+              {[
+                { path: '/catalog', label: 'Catalog' },
+                { path: '/orders', label: 'Orders' },
+                { path: '/config', label: 'Config' },
+                { path: '/agent', label: 'Agent' },
+              ].map(({ path, label }) => (
+                <Link
+                  key={path}
+                  to={path}
+                  className={`${NAV_LINK_CLASS} ${isActivePath(path) ? `${NAV_LINK_CLASS}-active` : ''}`}
+                >
+                  {label}
+                </Link>
+              ))}
+              <RollingSearch onSearch={handleSearch} />
+
+              {/* Auth section with wallet connection */}
+              <WalletMultiButton
+                style={{
+                  backgroundColor: DRAMS.orange,
+                  borderRadius: '48px',
+                  ...TYPOGRAPHY.bodySmall,
+                }}
+              />
+            </nav>
+          </div>
+        </header>
+        <main style={{ flex: 1, overflow: 'auto' }}>
+          <Routes>
             <Route path="/" element={<DashboardPage />} />
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/catalog" element={<CatalogPage />} />
@@ -152,10 +140,10 @@ export function App() {
             <Route path="/orders/:id" element={<OrderDetailPage />} />
             <Route path="/config" element={<ConfigPage />} />
             <Route path="/agent" element={<AgentChatPage />} />
-          </Route>
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </main>
-    </div>
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </main>
+      </div>
+    </>
   );
 }
