@@ -9,4 +9,5 @@
 
 [build.environment]
   NODE_VERSION = "20"
+  VITE_IDENTITY_URL = "https://identity-aadhar-gateway.onrender.com"
   VITE_IDENTITY_WEB_URL = "https://aadharcha.in"
