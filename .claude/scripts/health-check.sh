@@ -31,7 +31,7 @@ echo "Checking infrastructure..."
 disk_usage=$(df -h . | tail -1 | awk '{print $5}' | sed 's/%//')
 if [ "$disk_usage" -gt 90 ]; then
   echo "✗ Disk space critically low: ${disk_usage}% used" >&2
-  echo "Fix: Run 'pnpm clean' or clean up node_modules" >&2
+  echo "Fix: clean npm cache or remove stale node_modules artifacts" >&2
   ISSUES_FOUND=1
 elif [ "$disk_usage" -gt 80 ]; then
   echo "⚠ Disk space warning: ${disk_usage}% used" >&2
@@ -49,12 +49,20 @@ else
 fi
 
 # Repo isolation check
-if rg -n '\.\./shared/portfolio-ui' src tsconfig.json vite.config.ts vitest.config.ts >/dev/null 2>&1; then
+set +e
+rg --quiet '\.\./shared/portfolio-ui' src tsconfig.json vite.config.ts vitest.config.ts >/dev/null 2>&1
+rg_status=$?
+set -e
+
+if [ "$rg_status" -eq 0 ]; then
   echo "✗ Workspace-relative portfolio-ui imports detected" >&2
   echo "Fix: vendor the shared UI into src/portfolio-ui or replace the external alias before opening a PR" >&2
   ISSUES_FOUND=1
-else
+elif [ "$rg_status" -eq 1 ]; then
   echo "✓ No workspace-relative portfolio-ui imports"
+else
+  echo "✗ Error running repo isolation check with ripgrep" >&2
+  ISSUES_FOUND=1
 fi
 
 if [ $ISSUES_FOUND -eq 1 ]; then
