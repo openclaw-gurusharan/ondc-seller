@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { MOCK_CATALOG_RESPONSE } from '../lib/mockCatalog';
 
 interface UseApiResult<T> {
   data: T | null;
@@ -23,7 +24,12 @@ export function useApi<T>(url: string): UseApiResult<T> {
       const result = await response.json();
       setData(result);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unknown error');
+      if (url === '/api/catalog') {
+        setData(MOCK_CATALOG_RESPONSE as T);
+        setError(null);
+      } else {
+        setError(err instanceof Error ? err.message : 'Unknown error');
+      }
     } finally {
       setLoading(false);
     }

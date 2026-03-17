@@ -1,7 +1,9 @@
 import { useEffect, useCallback, type CSSProperties } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApi } from '../hooks/useApi';
+import { useTrustState } from '../hooks/useTrustState';
 import { InventoryTable } from '../components';
+import { useWallet } from '@solana/wallet-adapter-react';
 import {
   PageLayout,
   PageHeader,
@@ -13,6 +15,7 @@ import {
   GRID,
 } from '@drams-design/components';
 import type { BecknItem } from '@ondc-sdk/shared';
+import { TrustNotice } from '../components/TrustStatus';
 
 const LOADING_STYLE: CSSProperties = {
   display: 'flex',
@@ -41,7 +44,10 @@ const CARD_STYLE: CSSProperties = {
 
 export function CatalogPage() {
   const navigate = useNavigate();
+  const { publicKey } = useWallet();
+  const trust = useTrustState(publicKey?.toBase58() ?? null);
   const { data, loading, error, execute } = useApi<any>('/api/catalog');
+  const trustBlocksCatalog = !trust.loading && trust.state !== 'verified';
 
   useEffect(() => {
     execute();
@@ -52,14 +58,20 @@ export function CatalogPage() {
 
   const handleEdit = useCallback(
     (item: BecknItem) => {
+      if (trustBlocksCatalog) {
+        return;
+      }
       navigate(`/catalog/${item.id}`);
     },
-    [navigate]
+    [navigate, trustBlocksCatalog]
   );
 
   const handleAdd = useCallback(() => {
+    if (trustBlocksCatalog) {
+      return;
+    }
     navigate('/catalog/edit/new');
-  }, [navigate]);
+  }, [navigate, trustBlocksCatalog]);
 
   if (error) {
     return (
@@ -76,10 +88,22 @@ export function CatalogPage() {
         title="Product Catalog"
         subtitle="Manage your product listings and inventory"
         actions={
-          <button onClick={handleAdd} style={PILL_BUTTON.orange}>
+          <button
+            onClick={handleAdd}
+            disabled={trustBlocksCatalog}
+            style={trustBlocksCatalog ? { ...PILL_BUTTON.orange, opacity: 0.5, cursor: 'not-allowed' } : PILL_BUTTON.orange}
+          >
             Add New Product
           </button>
         }
+      />
+
+      <TrustNotice
+        state={trust.state}
+        loading={trust.loading}
+        error={trust.error}
+        reason={trust.reason}
+        actionLabel="Resolve seller trust in AadhaarChain"
       />
 
       {loading ? (
@@ -97,8 +121,15 @@ export function CatalogPage() {
               <div
                 key={item.id}
                 onClick={() => handleEdit(item)}
-                style={CARD_STYLE}
+                style={{
+                  ...CARD_STYLE,
+                  cursor: trustBlocksCatalog ? 'not-allowed' : CARD_STYLE.cursor,
+                  opacity: trustBlocksCatalog ? 0.7 : 1,
+                }}
                 onMouseEnter={(e) => {
+                  if (trustBlocksCatalog) {
+                    return;
+                  }
                   e.currentTarget.style.transform = 'translateY(-4px)';
                   e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.1)';
                 }}

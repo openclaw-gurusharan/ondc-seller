@@ -7,14 +7,17 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
+      '@drams-design/components': path.resolve(
+        __dirname,
+        '../../Research/drams-design/src/index.ts'
+      ),
     },
   },
   optimizeDeps: {
     exclude: [],
-    include: ['@ondc-sdk/shared/design-system'],
   },
   server: {
-    port: 3002,
+    port: 3003,
     proxy: {
       '/api': 'http://localhost:3001',
       '/on_search': 'http://localhost:3001',
