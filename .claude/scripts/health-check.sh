@@ -42,10 +42,19 @@ fi
 # Node modules check
 if [ ! -d "node_modules" ]; then
   echo "✗ node_modules not found" >&2
-  echo "Fix: pnpm install" >&2
+  echo "Fix: npm install" >&2
   ISSUES_FOUND=1
 else
   echo "✓ node_modules exists"
+fi
+
+# Repo isolation check
+if rg -n '\.\./shared/portfolio-ui' src tsconfig.json vite.config.ts vitest.config.ts >/dev/null 2>&1; then
+  echo "✗ Workspace-relative portfolio-ui imports detected" >&2
+  echo "Fix: vendor the shared UI into src/portfolio-ui or replace the external alias before opening a PR" >&2
+  ISSUES_FOUND=1
+else
+  echo "✓ No workspace-relative portfolio-ui imports"
 fi
 
 if [ $ISSUES_FOUND -eq 1 ]; then
