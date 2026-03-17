@@ -13,8 +13,8 @@
  * ```
  */
 
-import { useAuthContext } from '../contexts/AuthContext';
-import type { SSOUser } from '../contexts/AuthContext';
+import { useAuthContext } from '@/contexts/AuthContext';
+import type { SSOUser } from '@/contexts/AuthContext';
 
 export interface UseAuthResult {
   /** Current authenticated user (null if not logged in) */

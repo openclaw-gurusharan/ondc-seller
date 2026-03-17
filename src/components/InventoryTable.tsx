@@ -54,7 +54,7 @@ export function InventoryTable({ items, onEdit, onDelete }: InventoryTableProps)
         </thead>
         <tbody>
           {items.map((item) => {
-            const imageUrl = (item as any).images?.[0]?.url;
+            const imageUrl = item.images?.[0]?.url;
             const shortDescription = item.descriptor?.short_desc;
 
             return (
