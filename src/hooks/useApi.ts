@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { MOCK_CATALOG_RESPONSE } from '../lib/mockCatalog';
 
 interface UseApiResult<T> {
@@ -13,7 +13,7 @@ export function useApi<T>(url: string): UseApiResult<T> {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const execute = async () => {
+  const execute = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -33,7 +33,7 @@ export function useApi<T>(url: string): UseApiResult<T> {
     } finally {
       setLoading(false);
     }
-  };
+  }, [url]);
 
   return { data, loading, error, execute };
 }

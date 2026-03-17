@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { CARD, COLORS, SPACING, TYPOGRAPHY, DRAMS } from '@drams-design/components';
-import { PageLayout, PageHeader, DramsInput, DramsButton } from '@drams-design/components';
+import { CARD, COLORS, SPACING, TYPOGRAPHY, DRAMS } from '@portfolio-ui';
+import { PageLayout, PageHeader, DramsInput, DramsButton } from '@portfolio-ui';
 import { useTrustState } from '../hooks/useTrustState';
 import { TrustNotice } from '../components/TrustStatus';
 import { useWallet } from '@solana/wallet-adapter-react';

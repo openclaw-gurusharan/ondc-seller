@@ -15,8 +15,11 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@drams-design/components": ["../../Research/drams-design/src/index.ts"],
-      "@ondc-sdk/shared": ["./src/types/index.ts"]
+      "@portfolio-ui": ["../shared/portfolio-ui/src/index.tsx"],
+      "@ondc-sdk/shared": ["./src/types/index.ts"],
+      "react": ["./node_modules/@types/react/index.d.ts"],
+      "react-dom": ["./node_modules/@types/react-dom/index.d.ts"],
+      "react/jsx-runtime": ["./node_modules/@types/react/jsx-runtime.d.ts"]
     }
   },
   "include": ["src"]

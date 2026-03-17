@@ -1,4 +1,4 @@
-import { TYPOGRAPHY } from '@drams-design/components';
+import { TYPOGRAPHY } from '@portfolio-ui';
 import type { PortfolioTrustState } from '@/lib/trust';
 
 const IDENTITY_WEB_URL = import.meta.env.VITE_IDENTITY_WEB_URL || 'http://localhost:3000';
