@@ -1,8 +1,7 @@
 import { TYPOGRAPHY } from '@portfolio-ui';
-import { normalizeLoopbackUrl } from '@/lib/loopback';
 import type { PortfolioTrustState } from '@/lib/trust';
 
-const IDENTITY_WEB_URL = normalizeLoopbackUrl(import.meta.env.VITE_IDENTITY_WEB_URL || 'http://127.0.0.1:43100');
+const IDENTITY_WEB_URL = import.meta.env.VITE_IDENTITY_WEB_URL || 'http://127.0.0.1:43100';
 
 const STATE_META: Record<PortfolioTrustState, { label: string; background: string; color: string }> = {
   no_identity: {
