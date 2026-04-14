@@ -100,7 +100,7 @@ apiClient.interceptors.response.use(
       // Don't redirect if already on login page
       if (currentPath !== '/login') {
         const returnUrl = encodeURIComponent(`${window.location.origin}${currentPath}`);
-        window.location.href = `${IDENTITY_URL}/login?return=${returnUrl}`;
+        window.location.href = `${IDENTITY_WEB_URL}/login?return=${returnUrl}`;
       }
     }
     return Promise.reject(error);
